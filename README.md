@@ -1,7 +1,7 @@
 # Contacts App
 
 ## What is it?
-With this app you are going to be able to Create, Read, Update and Delete contacts
+It's an web app where you are going to be able to Create, Read, Update and Delete contacts.
 
 ## Dependencies
 - Docker (https://docs.docker.com/install/)
