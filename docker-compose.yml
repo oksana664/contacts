@@ -1,9 +1,9 @@
 version: '3'
 services:
   web:
-    hostname: web-contact-form
-    container_name: web-contact-form
-    image: mileschou/phalcon:7.3-apache
+    hostname: web-contact
+    container_name: web-contact
+    build: .
     ports:
       - "80:80"
     volumes:
@@ -11,8 +11,8 @@ services:
     depends_on:
       - db
   db:
-    hostname: db-contact-form
-    container_name: db-contact-form
+    hostname: db-contact
+    container_name: db-contact
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
     restart: always
