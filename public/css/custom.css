@@ -1,0 +1,8 @@
+.btn, .form-control {
+    border-radius: 0 !important;
+}
+
+.navbar {
+    margin-right: -15px;
+    margin-left: -15px;
+}
