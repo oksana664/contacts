@@ -89,8 +89,45 @@ Json Response:
     }
 
 ####/contacts/delete/<id>
-Json Response: Same as /contacts/search3
+Json Response: Same as /contacts/search
 
+####/contacts/update
+This endpoint updates a contact 
+
+Request POST: 
+
+    - id: [required]
+    - first_name: [required]
+    - last_name: [required]
+    - email: <name>@<domain> [optional]
+    - birthday: YYYY-MM-DD [optional]
+    - phone: [optional]
+
+Json Response: Same as /contacts/search
+
+####/contacts/edit
+This endpoint return a contact. Usefull for the UI to fill the edit form. 
+
+Request POST: 
+
+    - id: [required]
+
+
+Json Response:
+
+    {
+        "id": "3",
+        "contact": {
+            "id": "3",
+            "first_name": "Federico 2",
+            "last_name": "Gon",
+            "email": "test@fake.com",
+            "birthdate": "1984-03-18",
+            "phone": "1554545"
+        },
+        "message": null,
+        "success": true
+    }
 
 ## Unit Tests
 COMMING SOON
