@@ -3,16 +3,10 @@
 use Phalcon\Mvc\Model\Criteria;
 use Phalcon\Paginator\Adapter\Model as Paginator;
 use Validators\Contacts\Create as CreateValidator;
+use \Validators\Contacts\Save as SaveValidator;
 
 class ContactsController extends ControllerBase
 {
-    /**
-     * Index action
-     */
-    public function indexAction()
-    {
-        $this->persistent->parameters = null;
-    }
 
     /**
      * Searches for contacts
@@ -50,6 +44,48 @@ class ContactsController extends ControllerBase
         ]);
 
         $this->view->page = $paginator->getPaginate();
+    }
+
+    /**
+     * Displays the creation form
+     */
+    public function newAction()
+    {
+
+    }
+
+    /**
+     * Edits a contact and displays the edit form
+     *
+     * @param string $id
+     */
+    public function editAction($id)
+    {
+        if (!$this->request->isPost()) {
+            $contact = Contacts::findFirstByid($id);
+            if (!$contact) {
+                $this->flash->error('contact was not found');
+
+                $this->dispatcher->forward([
+                    'controller' => 'contacts',
+                    'action' => 'search'
+                ]);
+
+                return;
+            }
+
+            $this->view->id = $contact->getId();
+            if ($this->request->isAjax()) {
+                $this->view->contact = $contact;
+            }
+
+            $this->tag->setDefault('id', $contact->getId());
+            $this->tag->setDefault('first_name', $contact->getFirstName());
+            $this->tag->setDefault('last_name', $contact->getLastName());
+            $this->tag->setDefault('email', $contact->getEmail());
+            $this->tag->setDefault('birthdate', $contact->getBirthdate());
+            $this->tag->setDefault('phone', $contact->getPhone());
+        }
     }
 
     /**
@@ -95,6 +131,52 @@ class ContactsController extends ControllerBase
         }
     }
 
+    /**
+     * Saves a contact edited
+     *
+     */
+    public function saveAction()
+    {
+
+        if ($this->request->isPost()) {
+            $id = $this->request->getPost('id');
+            try {
+                $validator = new SaveValidator();
+                $validator->validate($this->request->getPost());
+
+                $contact = Contacts::findFirstByid($id);
+                if (!$contact instanceof Contacts) {
+                    throw new Exception("contact does not exist {$id}");
+                }
+                $contact->setFirstName($validator->getValue('first_name'));
+                $contact->setLastName($validator->getValue('last_name'));
+                $contact->setEmail($validator->getValue('email'));
+                $contact->setBirthdate($validator->getValue('birthdate'));
+                $contact->setPhone($validator->getValue('phone'));
+
+                if (!$contact->save()) {
+                    foreach ($contact->getMessages() as $message) {
+                        throw new Exception($message);
+                    }
+                }
+                $this->flash->success('contact was updated successfully');
+            } catch (Exception $e) {
+                do {
+                    $this->flash->error($e->getMessage());
+                } while ($e = $e->getPrevious());
+                $this->dispatcher->forward([
+                    'controller' => 'contacts',
+                    'action' => 'edit',
+                    'params' => [$id]
+                ]);
+                return;
+            }
+        }
+        $this->dispatcher->forward([
+            'controller' => 'contacts',
+            'action' => 'search'
+        ]);
+    }
 
     /**
      * Deletes a contact
