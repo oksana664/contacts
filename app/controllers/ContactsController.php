@@ -1,9 +1,57 @@
 <?php
 
+use Phalcon\Mvc\Model\Criteria;
+use Phalcon\Paginator\Adapter\Model as Paginator;
 use Validators\Contacts\Create as CreateValidator;
 
 class ContactsController extends ControllerBase
 {
+    /**
+     * Index action
+     */
+    public function indexAction()
+    {
+        $this->persistent->parameters = null;
+    }
+
+    /**
+     * Searches for contacts
+     */
+    public function searchAction()
+    {
+        $numberPage = 1;
+        if ($this->request->isPost()) {
+            $params = [];
+            if($this->request->hasPost('search'))
+            {
+                $searchText = $this->request->getPost('search');
+                $params['first_name'] = $searchText;
+                $params['last_name'] = $searchText;
+                $params['email'] = $searchText;
+            }
+
+            $query = Criteria::fromInput($this->di, 'Contacts', $params, 'OR');
+            $this->persistent->parameters = $query->getParams();
+        } else {
+            $numberPage = $this->request->getQuery('page', 'int');
+        }
+
+        $parameters = $this->persistent->parameters;
+        if (!is_array($parameters)) {
+            $parameters = [];
+        }
+        $parameters['order'] = 'last_name ASC';
+
+        $contacts = Contacts::find($parameters);
+
+        $paginator = new Paginator([
+            'data' => $contacts,
+            'limit' => 10,
+            'page' => $numberPage
+        ]);
+
+        $this->view->page = $paginator->getPaginate();
+    }
 
     /**
      * Creates a new contact
