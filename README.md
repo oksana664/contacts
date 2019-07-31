@@ -17,6 +17,38 @@ Then in your browser goto the url:
     
     http://localhost/
 
-## Services
 
+## Endpoints
+All endpoints will return a **json** if the request has the headers:
+    
+    X-Requested-With: XMLHttpRequest 
+
+otherwise will return an **HTML**.
+
+I decide **NOT** to use a API REST format because I want to take advantage of phalcon's  auto generated HTML code. 
+
+
+You can use Postman to import tests/Contacts.postman_collecyion.json for endpoints calls examples.
+
+####/contacts/create
+Request:
+
+    - first_name: [required]
+    - last_name: [required]
+    - email: <name>@<domain> [optional]
+    - birthday: YYYY-MM-DD [optional]
+    - phone: [optional]
+Json Response:
+
+    {
+          "message": {
+              "success": [
+                  "Contact was created successfully"
+              ]
+          },
+          "success": true
+    }
+   
+
+## Unit Tests
 COMMING SOON
