@@ -1,7 +1,6 @@
 <?php
- 
-use Phalcon\Mvc\Model\Criteria;
 
+use Validators\Contacts\Create as CreateValidator;
 
 class ContactsController extends ControllerBase
 {
@@ -11,41 +10,42 @@ class ContactsController extends ControllerBase
      */
     public function createAction()
     {
-        if (!$this->request->isPost()) {
-            $this->dispatcher->forward([
-                'controller' => 'contacts',
-                'action' => 'list'
-            ]);
+        if ($this->request->isPost()) {
+            try {
+                $validator = new CreateValidator();
+                $validator->validate($this->request->getPost());
 
-            return;
-        }
+                $contact = new Contacts();
+                $contact->setFirstName($validator->getValue('first_name'));
+                $contact->setLastName($validator->getValue('last_name'));
+                $contact->setEmail($validator->getValue('email'));
+                $contact->setBirthdate($validator->getValue('birthdate'));
+                $contact->setPhone($validator->getValue('phone'));
 
-        $contact = new Contacts();
-        $contact->setFirstName($this->request->getPost('first_name'));
-        $contact->setLastName($this->request->getPost('last_name'));
-        $contact->setEmail($this->request->getPost('email', 'email'));
-        $contact->setBirthdate($this->request->getPost('birthdate'));
-        $contact->setPhone($this->request->getPost('phone'));
-
-        if (!$contact->save()) {
-            foreach ($contact->getMessages() as $message) {
-                $this->flash->error($message);
+                if (!$contact->save()) {
+                    foreach ($contact->getMessages() as $message) {
+                        throw new Exception($message);
+                    }
+                }
+                $this->flash->success('Contact was created successfully');
+            } catch (Exception $e) {
+                do {
+                    $this->flash->error($e->getMessage());
+                } while ($e = $e->getPrevious());
+                $this->dispatcher->forward([
+                    'controller' => 'contacts',
+                    'action' => 'new'
+                ]);
+                return;
             }
-
-            $this->dispatcher->forward([
-                'controller' => 'contacts',
-                'action' => 'new'
-            ]);
-
-            return;
         }
 
-        $this->flash->success('Contact was created successfully');
-
-        $this->dispatcher->forward([
-            'controller' => 'contacts',
-            'action' => 'list'
-        ]);
+        if (!$this->request->isAjax()) {
+            $this->dispatcher->forward([
+                'controller' => 'contacts',
+                'action' => 'search'
+            ]);
+        }
     }
 
 }
