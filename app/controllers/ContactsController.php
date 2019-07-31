@@ -22,8 +22,7 @@ class ContactsController extends ControllerBase
         $numberPage = 1;
         if ($this->request->isPost()) {
             $params = [];
-            if($this->request->hasPost('search'))
-            {
+            if ($this->request->hasPost('search')) {
                 $searchText = $this->request->getPost('search');
                 $params['first_name'] = $searchText;
                 $params['last_name'] = $searchText;
@@ -94,6 +93,38 @@ class ContactsController extends ControllerBase
                 'action' => 'search'
             ]);
         }
+    }
+
+
+    /**
+     * Deletes a contact
+     *
+     * @param string $id
+     */
+    public function deleteAction($id)
+    {
+        $id = intval($id);
+        if ($id > 0) {
+            $contact = Contacts::findFirstByid($id);
+            if ($contact instanceof Contacts) {
+
+                if ($contact->delete()) {
+                    $this->flash->success('Contact was deleted successfully');
+                } else {
+                    foreach ($contact->getMessages() as $message) {
+                        $this->flash->error($message);
+                    }
+                }
+            } else {
+                $this->flash->error('Contact was not found');
+            }
+        } else {
+            $this->flash->error('Invalid contact ID');
+        }
+        $this->dispatcher->forward([
+            'controller' => 'contacts',
+            'action' => 'search'
+        ]);
     }
 
 }

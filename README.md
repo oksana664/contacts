@@ -88,5 +88,9 @@ Json Response:
        "success": true
     }
 
+####/contacts/delete/<id>
+Json Response: Same as /contacts/search3
+
+
 ## Unit Tests
 COMMING SOON
