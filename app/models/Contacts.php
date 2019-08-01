@@ -1,8 +1,5 @@
 <?php
 
-use Phalcon\Validation;
-use Phalcon\Validation\Validator\Email as EmailValidator;
-
 class Contacts extends \Phalcon\Mvc\Model
 {
 
@@ -100,9 +97,9 @@ class Contacts extends \Phalcon\Mvc\Model
      * @param string $birthdate
      * @return $this
      */
-    public function setBirthdate($birthdate)
+    public function setBirthdate( $birthdate = null)
     {
-        $this->birthdate = $birthdate;
+        $this->birthdate = empty($birthdate) ? null : $birthdate;
 
         return $this;
     }
@@ -150,6 +147,11 @@ class Contacts extends \Phalcon\Mvc\Model
         return $this->last_name;
     }
 
+    public function getFullName()
+    {
+        return "{$this->first_name} {$this->last_name}";
+    }
+
     /**
      * Returns the value of field email
      *
@@ -163,11 +165,17 @@ class Contacts extends \Phalcon\Mvc\Model
     /**
      * Returns the value of field birthdate
      *
-     * @return string
+     * @return DateTime|string|null
      */
-    public function getBirthdate()
+    public function getBirthdate($asDatetime = false)
     {
-        return $this->birthdate;
+        if (!empty($this->birthdate)) {
+            if ($asDatetime) {
+                return new DateTime($this->birthdate);
+            }
+            return $this->birthdate;
+        }
+        return null;
     }
 
     /**

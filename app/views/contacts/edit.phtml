@@ -1,0 +1,55 @@
+<?php
+/**
+ * @var \Phalcon\Mvc\View\Engine\Php $this
+ */
+
+echo $this->getContent();
+?>
+
+<form method="post" action="/contacts/save" autocomplete="off" class="form-horizontal">
+
+    <div class="form-group">
+        <label for="fieldFirstName" class="col-sm-2 control-label">First Name</label>
+        <div class="col-sm-6">
+            <?php echo $this->tag->textField(["first_name", "size" => 30, "class" => "form-control form-control-lg", "id" => "fieldFirstName"]) ?>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="fieldLastName" class="col-sm-2 control-label">Last Name</label>
+        <div class="col-sm-6">
+            <?php echo $this->tag->textField(["last_name", "size" => 30, "class" => "form-control form-control-lg", "id" => "fieldLastName"]) ?>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="fieldEmail" class="col-sm-2 control-label">Email</label>
+        <div class="col-sm-6">
+            <?php echo $this->tag->emailField(["email", "size" => 30, "class" => "form-control form-control-lg", "id" => "fieldEmail"]) ?>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="fieldBirthdate" class="col-sm-2 control-label">Birthdate</label>
+        <div class="col-sm-6">
+            <?php echo $this->tag->dateField(["birthdate", "class" => "form-control form-control-lg", "id" => "fieldBirthdate"]) ?>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="fieldPhone" class="col-sm-2 control-label">Phone</label>
+        <div class="col-sm-6">
+            <?php echo $this->tag->textField(["phone", "size" => 30, "class" => "form-control form-control-lg", "id" => "fieldPhone", 'type' => 'date']) ?>
+        </div>
+    </div>
+
+    <?php echo $this->tag->hiddenField("id") ?>
+
+    <div class="form-group">
+        <div class="col-sm-6">
+            <button type="submit" class="btn btn-primary float-right">Save Changes</button>
+            <a href="/contacts/search" class="btn btn-secondary float-right mr-3">Cancel</a>
+        </div>
+    </div>
+
+</form>
