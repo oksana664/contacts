@@ -4,9 +4,9 @@ namespace Validators\Contacts;
 
 use Exception;
 use Phalcon\Validation;
-use Phalcon\Validation\Validator\PresenceOf;
-use Phalcon\Validation\Validator\Regex as RegexValidator;
+use Phalcon\Validation\Validator\Date as DateValidator;
 use Phalcon\Validation\Validator\Email as EmailValidator;
+use Phalcon\Validation\Validator\PresenceOf;
 
 class Create extends Validation
 {
@@ -25,20 +25,18 @@ class Create extends Validation
 
         $this->add(
             'birthday',
-
-            new RegexValidator([
+            new DateValidator([
                 'allowEmpty' => true,
-                'pattern' => '/^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/',
-                'message' => "The field 'birthday' is invalid. Should have the format YYYY-MM-DD"
+                'format' => 'Y-m-d',
+                'message' => 'The field "birthday" is invalid. Should have the format Y-M-D',
             ])
         );
 
         $this->add(
             'email',
             new EmailValidator([
-                "message" => [
-                    "email" => "The e-mail is not valid",
-                ],
+                'allowEmpty' => true,
+                'message' => 'The e-mail is not valid',
             ])
         );
 
