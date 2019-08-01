@@ -3,3 +3,4 @@
 db
 vendor
 tests/.phpunit.result.cache
+public/report
