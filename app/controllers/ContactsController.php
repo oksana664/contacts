@@ -110,7 +110,8 @@ class ContactsController extends ControllerBase
                         throw new Exception($message);
                     }
                 }
-                $this->flash->success('Contact was created successfully');
+                $name = $contact->getFullName();
+                $this->flash->success("Contact '$name' created");
             } catch (Exception $e) {
                 do {
                     $this->flash->error($e->getMessage());
@@ -137,7 +138,6 @@ class ContactsController extends ControllerBase
      */
     public function saveAction()
     {
-
         if ($this->request->isPost()) {
             $id = $this->request->getPost('id');
             try {
@@ -159,7 +159,8 @@ class ContactsController extends ControllerBase
                         throw new Exception($message);
                     }
                 }
-                $this->flash->success('contact was updated successfully');
+                $name = $contact->getFullName();
+                $this->flash->success("Contact '$name' updated");
             } catch (Exception $e) {
                 do {
                     $this->flash->error($e->getMessage());
@@ -189,9 +190,9 @@ class ContactsController extends ControllerBase
         if ($id > 0) {
             $contact = Contacts::findFirstByid($id);
             if ($contact instanceof Contacts) {
-
+                $name = $contact->getFullName();
                 if ($contact->delete()) {
-                    $this->flash->success('Contact was deleted successfully');
+                    $this->flash->success("Contact '$name' was deleted");
                 } else {
                     foreach ($contact->getMessages() as $message) {
                         $this->flash->error($message);

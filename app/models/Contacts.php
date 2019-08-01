@@ -150,6 +150,10 @@ class Contacts extends \Phalcon\Mvc\Model
         return $this->last_name;
     }
 
+    public function getFullName() {
+        return "{$this->first_name} {$this->last_name}";
+    }
+
     /**
      * Returns the value of field email
      *

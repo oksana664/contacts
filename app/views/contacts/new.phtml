@@ -1,75 +1,55 @@
 <?php
 /**
- * @var \Phalcon\Mvc\View\Engine\Php $this
+ * @var Php $this
  */
+
+use Phalcon\Mvc\View\Engine\Php;
+
+echo $this->getContent();
 ?>
 
-<div class="row">
-    <nav>
-        <ul class="pager">
-            <li class="previous"><?php echo $this->tag->linkTo(["contacts", "Go Back"]) ?></li>
-        </ul>
-    </nav>
-</div>
+<form method="post" action="/contacts/create" autocomplete="off" class="form-horizontal">
 
-<div class="page-header">
-    <h1>
-        Create contacts
-    </h1>
-</div>
-
-<?php echo $this->getContent(); ?>
-
-<?php
-    echo $this->tag->form(
-        [
-            "contacts/create",
-            "autocomplete" => "off",
-            "class" => "form-horizontal"
-        ]
-    );
-?>
-
-<div class="form-group">
-    <label for="fieldFirstName" class="col-sm-2 control-label">First Of Name</label>
-    <div class="col-sm-10">
-        <?php echo $this->tag->textField(["first_name", "size" => 30, "class" => "form-control", "id" => "fieldFirstName"]) ?>
+    <div class="form-group">
+        <label for="fieldFirstName" class="col-sm-2 control-label">First Name</label>
+        <div class="col-sm-6">
+            <?php echo $this->tag->textField(["first_name", "size" => 30, "class" => "form-control form-control-lg", "id" => "fieldFirstName"]) ?>
+        </div>
     </div>
-</div>
 
-<div class="form-group">
-    <label for="fieldLastName" class="col-sm-2 control-label">Last Of Name</label>
-    <div class="col-sm-10">
-        <?php echo $this->tag->textField(["last_name", "size" => 30, "class" => "form-control", "id" => "fieldLastName"]) ?>
+    <div class="form-group">
+        <label for="fieldLastName" class="col-sm-2 control-label">Last Name</label>
+        <div class="col-sm-6">
+            <?php echo $this->tag->textField(["last_name", "size" => 30, "class" => "form-control form-control-lg", "id" => "fieldLastName"]) ?>
+        </div>
     </div>
-</div>
 
-<div class="form-group">
-    <label for="fieldEmail" class="col-sm-2 control-label">Email</label>
-    <div class="col-sm-10">
-        <?php echo $this->tag->textField(["email", "size" => 30, "class" => "form-control", "id" => "fieldEmail"]) ?>
+    <div class="form-group">
+        <label for="fieldEmail" class="col-sm-2 control-label">Email</label>
+        <div class="col-sm-6">
+            <?php echo $this->tag->textField(["email", "size" => 30, "class" => "form-control form-control-lg", "id" => "fieldEmail"]) ?>
+        </div>
     </div>
-</div>
 
-<div class="form-group">
-    <label for="fieldBirthdate" class="col-sm-2 control-label">Birthdate</label>
-    <div class="col-sm-10">
-        <?php echo $this->tag->textField(["birthdate", "type" => "date", "class" => "form-control", "id" => "fieldBirthdate"]) ?>
+    <div class="form-group">
+        <label for="fieldBirthdate" class="col-sm-2 control-label">Birthdate</label>
+        <div class="col-sm-6">
+            <?php echo $this->tag->textField(["birthdate", "type" => "date", "class" => "form-control form-control-lg", "id" => "fieldBirthdate"]) ?>
+        </div>
     </div>
-</div>
 
-<div class="form-group">
-    <label for="fieldPhone" class="col-sm-2 control-label">Phone</label>
-    <div class="col-sm-10">
-        <?php echo $this->tag->textField(["phone", "size" => 30, "class" => "form-control", "id" => "fieldPhone"]) ?>
+    <div class="form-group">
+        <label for="fieldPhone" class="col-sm-2 control-label">Phone</label>
+        <div class="col-sm-6">
+            <?php echo $this->tag->textField(["phone", "size" => 30, "class" => "form-control form-control-lg", "id" => "fieldPhone"]) ?>
+        </div>
     </div>
-</div>
 
-
-<div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-        <?php echo $this->tag->submitButton(["Save", "class" => "btn btn-default"]) ?>
+    <div class="form-group">
+        <div class="col-sm-6">
+            <button type="submit" class="btn btn-primary float-right">Create Contact</button>
+            <a href="/contacts/search" class="btn btn-secondary float-right mr-3">Cancel</a>
+        </div>
     </div>
-</div>
 
-<?php echo $this->tag->endForm(); ?>
+</form>

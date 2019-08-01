@@ -2,6 +2,8 @@
 
 $router = $di->getRouter();
 
-// Define your routes here
+$router->removeExtraSlashes(true);
+$router->add('/', ['controller' => 'contacts', 'action' => 'search']);
+$router->add('/contacts', ['controller' => 'contacts', 'action' => 'search']);
 
 $router->handle();
