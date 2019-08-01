@@ -1,3 +1,5 @@
 .phalcon
 .idea
 db
+vendor
+tests/.phpunit.result.cache

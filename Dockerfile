@@ -7,4 +7,11 @@ RUN sed -ri -e 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf
 
 RUN a2enmod rewrite
 
-RUN docker-php-ext-install mysqli pdo pdo_mysql
+RUN docker-php-ext-install mysqli pdo pdo_mysql zip
+
+RUN apt update && apt -y install git unzip
+
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && php composer-setup.php && rm -f composer-setup.php
+RUN mv composer.phar /usr/bin/composer && chmod 777 /usr/bin/composer
+RUN cd /var/www && composer install
+RUN ln -s /var/www/vendor/phpunit/phpunit/phpunit /usr/bin/phpunit

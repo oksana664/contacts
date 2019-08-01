@@ -1,6 +1,6 @@
 # Contacts App
 
-## What is it?
+## what is it about?
 It's an web app where you are going to be able to Create, Read, Update and Delete contacts.
 
 ## Dependencies
@@ -25,7 +25,10 @@ All endpoints will return a **json** if the request has the headers:
 
 otherwise will return an **HTML**.
 
-I decide **NOT** to use a API REST format because I want to take advantage of phalcon's  auto generated HTML code. 
+I decide **NOT** to use a API REST because I want to take advantage of phalcon's  auto generated HTML code.
+
+Also, Using REST I'll need a heavier client (js) to do the ajax calls and draw the UI. 
+I tried to keep the project as simple as possible and in this case It wasn't necessary to add JS into the project.
 
 
 You can use Postman to import tests/Contacts.postman_collecyion.json for endpoints calls examples.
