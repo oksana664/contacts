@@ -78,7 +78,7 @@
 			"response": []
 		},
 		{
-			"name": "update",
+			"name": "save",
 			"event": [
 				{
 					"listen": "test",
