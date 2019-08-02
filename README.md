@@ -4,9 +4,7 @@ It's a web app where you are going to be able to Create, Read, Update and Delete
 
 You can use the web interface or the API.
 
-## Deployed app
-
-In this URL you are going to be able to test the UI and the services using postman or similar.
+In the following URL you are going to be able to test the UI and the services using postman or similar.
 
     http://federicogon.ml:8080/
 
