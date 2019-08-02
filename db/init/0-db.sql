@@ -1,0 +1,1 @@
+create schema if not exists db_contacts CHARACTER SET utf8;

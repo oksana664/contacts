@@ -1,6 +1,9 @@
 .phalcon
 .idea
-db
+db/data
 vendor
-tests/.phpunit.result.cache
+tests/_data
+tests/_output
+tests/_support
 public/report
+html

@@ -3,7 +3,7 @@
 use Phalcon\Mvc\Model\Criteria;
 use Phalcon\Paginator\Adapter\Model as Paginator;
 use Validators\Contacts\Create as CreateValidator;
-use \Validators\Contacts\Save as SaveValidator;
+use Validators\Contacts\Save as SaveValidator;
 
 class ContactsController extends ControllerBase
 {
@@ -16,11 +16,13 @@ class ContactsController extends ControllerBase
         $numberPage = 1;
         if ($this->request->isPost()) {
             $params = [];
+            $this->persistent->search = '';
             if ($this->request->hasPost('search')) {
                 $searchText = $this->request->getPost('search');
                 $params['first_name'] = $searchText;
                 $params['last_name'] = $searchText;
                 $params['email'] = $searchText;
+                $this->persistent->search = $searchText;
             }
 
             $query = Criteria::fromInput($this->di, 'Contacts', $params, 'OR');
@@ -43,6 +45,7 @@ class ContactsController extends ControllerBase
             'page' => $numberPage
         ]);
 
+        $this->tag->setDefault('search', $this->persistent->search);
         $this->view->page = $paginator->getPaginate();
     }
 
@@ -111,15 +114,18 @@ class ContactsController extends ControllerBase
                     }
                 }
                 $name = $contact->getFullName();
+                $this->view->id = $contact->getId();
                 $this->flash->success("Contact '$name' created");
             } catch (Exception $e) {
                 do {
                     $this->flash->error($e->getMessage());
                 } while ($e = $e->getPrevious());
-                $this->dispatcher->forward([
-                    'controller' => 'contacts',
-                    'action' => 'new'
-                ]);
+                if (!$this->request->isAjax()) {
+                    $this->dispatcher->forward([
+                        'controller' => 'contacts',
+                        'action' => 'new'
+                    ]);
+                }
                 return;
             }
         }
@@ -160,23 +166,29 @@ class ContactsController extends ControllerBase
                     }
                 }
                 $name = $contact->getFullName();
+                $this->view->id = $contact->getId();
                 $this->flash->success("Contact '$name' updated");
             } catch (Exception $e) {
                 do {
                     $this->flash->error($e->getMessage());
                 } while ($e = $e->getPrevious());
-                $this->dispatcher->forward([
-                    'controller' => 'contacts',
-                    'action' => 'edit',
-                    'params' => [$id]
-                ]);
+                if (!$this->request->isAjax()) {
+                    $this->dispatcher->forward([
+                        'controller' => 'contacts',
+                        'action' => 'edit',
+                        'params' => [$id]
+                    ]);
+                }
                 return;
             }
         }
-        $this->dispatcher->forward([
-            'controller' => 'contacts',
-            'action' => 'search'
-        ]);
+
+        if (!$this->request->isAjax()) {
+            $this->dispatcher->forward([
+                'controller' => 'contacts',
+                'action' => 'search'
+            ]);
+        }
     }
 
     /**
@@ -184,7 +196,7 @@ class ContactsController extends ControllerBase
      *
      * @param string $id
      */
-    public function deleteAction($id)
+    public function deleteAction($id = null)
     {
         $id = intval($id);
         if ($id > 0) {
@@ -204,10 +216,12 @@ class ContactsController extends ControllerBase
         } else {
             $this->flash->error('Invalid contact ID');
         }
-        $this->dispatcher->forward([
-            'controller' => 'contacts',
-            'action' => 'search'
-        ]);
+        if (!$this->request->isAjax()) {
+            $this->dispatcher->forward([
+                'controller' => 'contacts',
+                'action' => 'search'
+            ]);
+        }
     }
 
 }
