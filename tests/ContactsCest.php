@@ -141,6 +141,7 @@ class ContactsCest
         $I->haveHttpHeader('X-Requested-With', 'XMLHttpRequest');
         $I->haveHttpHeader('Content-Type', 'application/x-www-form-urlencoded');
         $I->sendPOST('/contacts/save', [
+            'id' => $this->contactId,
             'first_name' => '',
             'last_name' => 'Test',
             'email' => 'test@fake.com',
@@ -158,6 +159,7 @@ class ContactsCest
         $I->haveHttpHeader('X-Requested-With', 'XMLHttpRequest');
         $I->haveHttpHeader('Content-Type', 'application/x-www-form-urlencoded');
         $I->sendPOST('/contacts/save', [
+            'id' => $this->contactId,
             'first_name' => 'not empty',
             'last_name' => '',
             'email' => 'test@fake.com',
@@ -175,6 +177,7 @@ class ContactsCest
         $I->haveHttpHeader('X-Requested-With', 'XMLHttpRequest');
         $I->haveHttpHeader('Content-Type', 'application/x-www-form-urlencoded');
         $I->sendPOST('/contacts/save', [
+            'id' => $this->contactId,
             'first_name' => 'not empty',
             'last_name' => 'not empty',
             'email' => 'testfake.com',
@@ -185,6 +188,24 @@ class ContactsCest
         $I->seeResponseIsJson();
         $I->seeResponseContains('"success":false');
         $I->seeResponseContains('The e-mail is not valid');
+    }
+
+    public function tryContactSaveInvalidDate(ApiTester $I)
+    {
+        $I->haveHttpHeader('X-Requested-With', 'XMLHttpRequest');
+        $I->haveHttpHeader('Content-Type', 'application/x-www-form-urlencoded');
+        $I->sendPOST('/contacts/save', [
+            'id' => $this->contactId,
+            'first_name' => 'not empty',
+            'last_name' => 'not empty',
+            'email' => 'test@fake.com',
+            'birthdate' => '19-03-1854',
+            'phone' => '1554545'
+        ]);
+        $I->seeResponseCodeIs(500);
+        $I->seeResponseIsJson();
+        $I->seeResponseContains('"success":false');
+        $I->seeResponseContains('"The field \"birthday\" is invalid. Should have the format Y-M-D."');
     }
 
     public function tryContactSaveEmpty(ApiTester $I)

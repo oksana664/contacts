@@ -2,8 +2,7 @@
 .idea
 db/data
 vendor
-tests/_data
-tests/_output
-tests/_support
+tests/_data/*
+tests/_output/*
 public/report
 html
