@@ -4,6 +4,12 @@ It's a web app where you are going to be able to Create, Read, Update and Delete
 
 You can use the web interface or the API.
 
+## Deployed app
+
+In this URL you are going to be able to test the UI and the services using postman or similar.
+
+    http://federicogon.ml:8080/
+
 ## Dependencies
 - Docker (https://docs.docker.com/install/)
 - Composer Docker (https://docs.docker.com/compose/install/)
@@ -12,7 +18,7 @@ You can use the web interface or the API.
 In command line run the following commands:
     
     $ git clone git@github.com:federicogon/contacts.git
-    $ docker-compose up
+    $ docker-compose up -d
     
 Then in your browser goto the url:
     
